@@ -1,0 +1,35 @@
+Jawaban UTS Pengolahan Citra Digital 
+
+Analisa Soal No. 1
+1. Jelaskan perbedaan persebaran nilai keabuan antara ketiga citra.
+Jawaban: 
+a. Citra Asli: Persebaran nilai keabuan (piksel) sangat bergantung pada karakteristik foto aslinya. Jika foto cenderung gelap, grafik histogram akan menumpuk di sisi kiri (nilai mendekati 0). Jika terang, akan menumpuk di kanan.
+b. Citra Negatif: Persebaran nilai keabuan pada histogram negatif adalah cerminan (inverse) dari histogram citra asli. Nilai intensitas dibalik: piksel yang tadinya gelap (misal bernilai 10) akan menjadi terang (bernilai 255 - 10 = 245). Akibatnya, bentuk histogram akan terbalik secara horizontal. Bagian gambar yang berwarna hitam menjadi putih, dan sebaliknya.
+c. Citra Logaritmik: Persebaran nilai keabuan akan mengalami peregangan di area gelap (rentang nilai rendah) dan pemampatan di area terang (rentang nilai tinggi). Sifat fungsi logaritma menaikkan intensitas piksel yang gelap secara signifikan, sementara piksel yang sudah terang peningkatannya tidak terlalu besar. Pada histogram, Anda akan melihat puncak-puncak piksel gelap bergeser dan menyebar ke arah kanan (menjadi lebih terang).
+
+2. Kapan transformasi logaritmik lebih bermanfaat dibanding negatif?
+Jawaban:
+Transformasi Logaritmik jauh lebih bermanfaat dibandingkan transformasi negatif ketika kita ingin meningkatkan detail pada area bayangan/gelap (mengekstrak detail tersembunyi) tanpa merusak atau membuat over-exposed area yang sudah terang.
+Contoh Kasus Penggunaan Logaritmik:Memperbaiki foto yang under-exposed (terlalu gelap/kurang cahaya) secara keseluruhan.
+Menganalisa spektrum Fourier (di mana nilai rentang datanya sangat besar, dari sangat kecil hingga sangat besar, sehingga butuh logaritma agar visualisasinya bisa dilihat mata manusia). Sedangkan transformasi negatif lebih cocok digunakan untuk menonjolkan detail warna terang/putih yang terperangkap di dalam background hitam yang dominan (misalnya pada hasil citra medis seperti foto Rontgen tulang atau Mamogram).
+
+Analisa Soal No. 2
+1. Bandingkan hasil visual dan nilai piksel rata-rata dari masing-masing hasil.
+Jawaban:
+a. Low Pass Filter (LPF):
+	1. Hasil Visual: Gambar terlihat lebih halus dan blur (kabur). Detail-detail kecil dan noise (derau) pada gambar asli memudar.
+	2. Rata-rata Piksel: Nilai rata-ratanya akan hampir sama atau identik dengan gambar asli. Hal ini terjadi karena jumlah total bobot pada kernel LPF adalah 1 (9 buah angka 1/9 jika dijumlahkan hasilnya 1). Filter ini hanya mendistribusikan ulang intensitas cahaya tanpa mengubah kecerahan total.
+b. High Pass Filter (HPF):
+	1. Hasil Visual: Area gambar yang warnanya datar/homogen akan menjadi sangat gelap (hitam), sementara area yang memiliki perubahan intensitas 	drastis (tepi/garis) akan tampak menyala (putih/abu-abu).
+	2. Rata-rata Piksel: Nilai rata-ratanya akan turun drastis mendekati 0. Ini terjadi karena jumlah total bobot kernel HPF adalah 0 (8 di tengah dikurangi delapan angka -1 di sekelilingnya). Filter ini menghilangkan komponen intensitas cahaya dasar (DC component), sehingga gambar secara keseluruhan menjadi hitam.
+c. Band Pass Filter / Sharpening (BPF):
+	1. Hasil Visual: Gambar mempertahankan bentuk dan warna aslinya, namun garis-garis tepi (edges) dan detail menjadi lebih tajam dan menonjol dibandingkan gambar asli.
+	2. Rata-rata Piksel: Nilai rata-ratanya akan mirip dengan gambar asli. Sama seperti LPF, total bobot kernel penajaman ini adalah 1 (nilai 5 di tengah dikurangi empat angka -1). Oleh karena itu, intensitas kecerahan keseluruhan gambar tetap terjaga, hanya detail tepinya yang diperkuat.
+
+2. Jelaskan hubungan antara domain spasial dan domain frekuensi dari ketiga jenis filter tersebut.
+Jawaban: 
+Dalam pengolahan citra, "frekuensi" tidak merujuk pada gelombang suara, melainkan pada seberapa cepat perubahan warna/intensitas piksel terjadi. Area gambar yang warnanya datar adalah "frekuensi rendah", sedangkan tepi objek atau tekstur rumit adalah "frekuensi tinggi".
+a. LPF (Low Pass Filter):Domain Spasial: Beroperasi dengan merata-rata nilai piksel tetangga.Domain Frekuensi: Filter ini "meloloskan" (pass) frekuensi rendah (area dengan perubahan warna yang lambat/halus) dan "memblokir/meredam" frekuensi tinggi (tepi dan noise). Itulah sebabnya gambar menjadi blur.
+b. HPF (High Pass Filter):Domain Spasial: Beroperasi dengan mencari selisih/perbedaan (turunan/derivatif) antara piksel pusat dengan piksel tetangganya.Domain Frekuensi: Berkebalikan dengan LPF. Filter ini "memblokir" frekuensi rendah (area datar dibuang menjadi hitam) dan "meloloskan" frekuensi tinggi. Ini menyebabkan hanya bagian tepi (perubahan warna yang cepat) yang terlihat.
+c. Filter Penajaman (Sharpening/BPF):Domain Spasial: Menggabungkan gambar asli dengan hasil deteksi tepi (HPF) dari gambar itu sendiri. Nilai piksel pusat diperkuat melebihi piksel sekitarnya.Domain Frekuensi: Filter ini meloloskan frekuensi rendah (sehingga bentuk asli gambar tetap terlihat) tetapi secara bersamaan memperkuat/meningkatkan (amplify) amplitudo pada frekuensi tinggi (sehingga tepi-tepinya menjadi jauh lebih jelas/tajam).
+
